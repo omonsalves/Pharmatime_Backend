@@ -18,7 +18,7 @@ public class UserRepository
 
                 if(usuario == null) {
                     var user = new Usuario()
-                    {
+                    { 
 
                         Nombre = model.Nombre,
                         Apellido = model.Apellido,
