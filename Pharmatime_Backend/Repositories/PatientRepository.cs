@@ -1,4 +1,5 @@
-﻿using Pharmatime_Backend.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Pharmatime_Backend.Models;
 using Pharmatime_Backend.Utilities;
 using System;
 
@@ -61,13 +62,16 @@ namespace Pharmatime_Backend.Repositories
             }
         }
 
-        public static List<object> ObtenerDatosEspecificosDeUsuarios()
+
+
+        public List<object> ReadPatient()
         {
             using (var context = new PHARMATIMEContext())
             {
                 try
                 {
                     var usuarios = context.Usuarios
+                        .Where(u => u.TipoUsuario == 2) // Filtrar por tipo_usuario igual a 2
                         .Select(u => new
                         {
                             Nombre = u.Nombre,
@@ -85,6 +89,80 @@ namespace Pharmatime_Backend.Repositories
                 {
                     Console.WriteLine($"Error al obtener los usuarios: {ex.Message}");
                     return null;
+                }
+            }
+        }
+
+
+        public static bool UpdatePatient(UpdatePatientDto model)
+        {
+            using (var context = new PHARMATIMEContext())
+            {
+
+                try
+                {
+                    // Buscar el usuario por su ID en la base de datos
+                    var usuario = context.Usuarios.Where(u => u.TipoUsuario == 2).FirstOrDefault(u => u.IdUsuario == model.IdUsuario);
+
+                    if (usuario != null)
+                    {
+                        // Actualizar las propiedades del usuario con los nuevos valores
+                        usuario.Nombre = model.Nombre;
+                        usuario.Apellido = model.Apellido;
+                        usuario.Genero = model.Genero;
+                        usuario.Telefono = model.Telefono;
+                        usuario.Edad = model.Edad;
+                        usuario.Correo = model.Correo;
+
+                        // Guardar los cambios en la base de datos
+                        context.SaveChanges();
+
+                        return true; // Indica que la actualización fue exitosa
+                    }
+                    else
+                    {
+                        // Si no se encontró el usuario con el ID proporcionado, devuelve falso
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Manejar cualquier excepción que pueda ocurrir durante la actualización
+                    Console.WriteLine($"Error al editar el usuario: {ex.Message}");
+                    return false;
+                }
+            }
+        }
+
+
+        public static bool DeletePatient(DeletePatientDto model)
+        {
+            using (var context = new PHARMATIMEContext())
+            {
+                try
+                {
+                    // Buscar el usuario por su ID en la base de datos
+                    var usuario = context.Usuarios.Where(u => u.TipoUsuario == 2).FirstOrDefault(u => u.IdUsuario == model.IdUsuario);
+
+                    if (usuario != null)
+                    {
+                        // Eliminar el usuario de la base de datos
+                        context.Usuarios.Remove(usuario);
+                        context.SaveChanges();
+
+                        return true; // Indica que la eliminación fue exitosa
+                    }
+                    else
+                    {
+                        // Si no se encontró el usuario con el ID proporcionado, devuelve falso
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Manejar cualquier excepción que pueda ocurrir durante la eliminación
+                    Console.WriteLine($"Error al eliminar el usuario: {ex.Message}");
+                    return false;
                 }
             }
         }

@@ -26,8 +26,8 @@ public class UserRepository
                         Telefono = model.Telefono,
                         Edad = model.Edad,
                         Correo = model.Correo,
-                        Contraseña = e.EncryptPassword(model.Contraseña)
-
+                        Contraseña = e.EncryptPassword(model.Contraseña),
+                        TipoUsuario = 1
                     };
 
                     context.Usuarios.Add(user);
