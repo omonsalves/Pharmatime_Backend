@@ -32,7 +32,7 @@ public class UserService
         var respuestaJson = new ResultDto()
         {
             Mensaje = "Credenciales incorrectas ",
-            Code = 400
+            Code = 401
         };
         
         if (UserRepository.Login(model.Correo, model.Contraseña))
@@ -40,7 +40,7 @@ public class UserService
             respuestaJson = new ResultDto()
             {
                 Mensaje = "Inicio de sesion correcto",
-                Code = 201
+                Code = 200
             };
         }
         
