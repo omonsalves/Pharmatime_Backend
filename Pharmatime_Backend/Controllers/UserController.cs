@@ -23,8 +23,7 @@ namespace Pharmatime_Backend.Controllers
         {
             var us = new UserService();
             var result = us.RegisterUser(usuario);
-            return StatusCode(result.Code, result);
-            
+            return StatusCode(result.Code, result);  
         }
 
         [HttpPost("Login")]
@@ -32,6 +31,14 @@ namespace Pharmatime_Backend.Controllers
         {
             var us = new UserService();
             var result = us.LogingUser(usuario);
+            return StatusCode(result.Code, result);
+        }
+        
+        [HttpPost("RecoverPasword")]
+        public IActionResult RecoverPasword([FromBody] MailDto Destinatario)
+        {
+            var us = new UserService();
+            var result = us.ServiceMail(Destinatario);
             return StatusCode(result.Code, result);
         }
 

@@ -17,7 +17,7 @@ namespace Pharmatime_Backend.Repositories
 
             for (int i = 0; i < 6; i++)
             {
-                contraseña += random.Next(0, 10); // Genera un número aleatorio entre 0 y 9
+                contraseña += random.Next(0, 10); 
             }
 
             
@@ -71,7 +71,7 @@ namespace Pharmatime_Backend.Repositories
                 try
                 {
                     var usuarios = context.Usuarios
-                        .Where(u => u.TipoUsuario == 2) // Filtrar por tipo_usuario igual a 2
+                        .Where(u => u.TipoUsuario == 2)
                         .Select(u => new
                         {
                             Nombre = u.Nombre,
@@ -81,7 +81,7 @@ namespace Pharmatime_Backend.Repositories
                             Edad = u.Edad,
                             Correo = u.Correo
                         })
-                        .ToList<object>(); // Cambiar a List<object> si se prefiere
+                        .ToList<object>();
 
                     return usuarios;
                 }
@@ -117,17 +117,17 @@ namespace Pharmatime_Backend.Repositories
                         // Guardar los cambios en la base de datos
                         context.SaveChanges();
 
-                        return true; // Indica que la actualización fue exitosa
+                        return true; 
                     }
                     else
                     {
-                        // Si no se encontró el usuario con el ID proporcionado, devuelve falso
+                       
                         return false;
                     }
                 }
                 catch (Exception ex)
                 {
-                    // Manejar cualquier excepción que pueda ocurrir durante la actualización
+                   
                     Console.WriteLine($"Error al editar el usuario: {ex.Message}");
                     return false;
                 }
@@ -150,17 +150,17 @@ namespace Pharmatime_Backend.Repositories
                         context.Usuarios.Remove(usuario);
                         context.SaveChanges();
 
-                        return true; // Indica que la eliminación fue exitosa
+                        return true; 
                     }
                     else
                     {
-                        // Si no se encontró el usuario con el ID proporcionado, devuelve falso
+                        
                         return false;
                     }
                 }
                 catch (Exception ex)
                 {
-                    // Manejar cualquier excepción que pueda ocurrir durante la eliminación
+                    
                     Console.WriteLine($"Error al eliminar el usuario: {ex.Message}");
                     return false;
                 }

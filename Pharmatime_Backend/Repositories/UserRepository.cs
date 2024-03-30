@@ -2,6 +2,9 @@
 using Pharmatime_Backend.Models;
 using Pharmatime_Backend.Utilities;
 using System;
+using System.Net.Mail;
+using System.Net;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 
 public class UserRepository
 {
@@ -9,16 +12,17 @@ public class UserRepository
     public static bool Register(RegisterDto model)
     {
         Encript e = new Encript();
-        
+
         using (var context = new PHARMATIMEContext())
         {
             try
             {
                 var usuario = context.Usuarios.SingleOrDefault(u => u.Correo == model.Correo);
 
-                if(usuario == null) {
+                if (usuario == null)
+                {
                     var user = new Usuario()
-                    { 
+                    {
 
                         Nombre = model.Nombre,
                         Apellido = model.Apellido,
@@ -36,7 +40,7 @@ public class UserRepository
                 }
 
                 return false;
-                
+
             }
             catch (Exception ex)
             {
@@ -60,12 +64,12 @@ public class UserRepository
 
                 if (usuario != null)
                 {
-                    // El usuario con el correo y la contraseña proporcionados existe en la base de datos.
+                    
                     return true;
                 }
                 else
                 {
-                    // No se encontró un usuario con el correo y la contraseña proporcionados.
+                    
                     return false;
                 }
             }
@@ -78,4 +82,67 @@ public class UserRepository
     }
 
 
+
+
+    public static bool Mail(MailDto model)
+    {
+        Encript e = new Encript();
+        bool resultado = false;
+        try
+        {
+            Random random = new Random();
+            string contraseña = "";
+
+            for (int i = 0; i < 6; i++)
+            {
+                contraseña += random.Next(0, 10);
+            }
+
+
+            using (var context = new PHARMATIMEContext())
+            {
+
+                var usuario = context.Usuarios.FirstOrDefault(u => u.Correo == model.Destinatario);
+
+                if (usuario != null)
+                {
+                    string Cencrypt = e.EncryptPassword(contraseña);
+                    usuario.Contraseña = Cencrypt;
+
+                    context.SaveChanges();
+
+                
+
+
+                     string asunto = "Recuperación de contraseña Pharmatime";
+                     string mensaje = "La nueva contraseña para su cuenta de pharmatime es:" + contraseña;
+
+                     MailMessage mail = new MailMessage();
+                     mail.To.Add(model.Destinatario);
+                     mail.From = new MailAddress("pharmatime8@gmail.com");
+                     mail.Subject = asunto;
+                     mail.Body = mensaje;
+                     mail.IsBodyHtml = true;
+
+                     var smtp = new SmtpClient()
+                     {
+                         Credentials = new NetworkCredential("pharmatime8@gmail.com", "huejdvhbfjbkvgjc"),
+                         Host = "smtp.gmail.com",
+                         Port = 587,
+                         EnableSsl = true
+                     };
+
+                     smtp.Send(mail);
+                     resultado = true;
+
+                }
+            }
+        }
+        catch (Exception ex)
+        { 
+            resultado = false;
+        }
+
+        return resultado;
+    }
 }

@@ -46,4 +46,27 @@ public class UserService
         
         return respuestaJson;
     }
+    public ResultDto ServiceMail(MailDto destinatario)
+    {
+        
+        var respuestaJson = new ResultDto()
+        {
+            Mensaje = "Error al enviar el correo",
+            Code = 401
+        };
+        
+        if (UserRepository.Mail(destinatario))
+        {
+            respuestaJson = new ResultDto()
+            {
+                Mensaje = "Correo enviado exitosamente",
+                Code = 200
+            };
+        }
+        
+        return respuestaJson;
+    }
+
+
+
 }
