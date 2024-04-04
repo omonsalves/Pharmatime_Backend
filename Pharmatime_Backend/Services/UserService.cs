@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Pharmatime_Backend.Models;
+using Pharmatime_Backend.Repositories.Models;
 using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
@@ -13,17 +13,17 @@ public class UserService
             Mensaje = "El correo del usuario ya se encuentra registrado",
             Code = 400
         };
-		
-		if (UserRepository.Register(user))
-		{
+
+        if (UserRepository.Register(user))
+        {
             respuestaJson = new ResultDto()
             {
                 Mensaje = "Usuario registrado correctamente",
                 Code = 201
             };
             
-		}
-        
+        }
+
         return respuestaJson;
     }
 
@@ -34,8 +34,8 @@ public class UserService
             Mensaje = "Credenciales incorrectas ",
             Code = 401
         };
-        
-        if (UserRepository.Login(model.Correo, model.Contraseña))
+
+        if (UserRepository.Login(model.Correo, model.Contrasena))
         {
             respuestaJson = new ResultDto()
             {
@@ -43,7 +43,7 @@ public class UserService
                 Code = 200
             };
         }
-        
+
         return respuestaJson;
     }
     public ResultDto ServiceMail(MailDto destinatario)
@@ -54,7 +54,7 @@ public class UserService
             Mensaje = "Error al enviar el correo",
             Code = 401
         };
-        
+
         if (UserRepository.Mail(destinatario))
         {
             respuestaJson = new ResultDto()
@@ -63,7 +63,7 @@ public class UserService
                 Code = 200
             };
         }
-        
+
         return respuestaJson;
     }
 

@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Pharmatime_Backend.Models;
+using Pharmatime_Backend.Repositories.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<PHARMATIMEContext>(options =>
+builder.Services.AddDbContext<PHARMATIME_DBContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("PHARMATIMEContext"));
 });

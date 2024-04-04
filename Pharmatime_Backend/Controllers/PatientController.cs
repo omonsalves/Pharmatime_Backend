@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Pharmatime_Backend.Models;
+using Pharmatime_Backend.Repositories.Models;
 using Pharmatime_Backend.Repositories;
 
 namespace Pharmatime_Backend.Controllers
@@ -9,9 +9,9 @@ namespace Pharmatime_Backend.Controllers
     public class PatientController : ControllerBase
     {
 
-        private readonly PHARMATIMEContext _context;
+        private readonly PHARMATIME_DBContext _context;
 
-        public PatientController(PHARMATIMEContext context)
+        public PatientController(PHARMATIME_DBContext context)
         {
             _context = context;
         }
@@ -33,12 +33,12 @@ namespace Pharmatime_Backend.Controllers
         {
             try
             {
-                var us = new PatientRepository();
-                var pa = new PatientService();
+                 var us = new PatientRepository();
+                 var pa = new PatientService();
                 // Aquí se invoca el método para obtener la lista de usuarios
                 var patient = us.ReadPatient();
 
-                var usuarios = pa.ListPatient(patient);
+                 var usuarios = pa.ListPatient(patient);
 
                 if (usuarios != null)
                 {
@@ -50,6 +50,7 @@ namespace Pharmatime_Backend.Controllers
                     // Si no se pudo obtener la lista de usuarios, devuelve un código de estado HTTP 500 (Error interno del servidor)
                     return StatusCode(500, "No se pudo obtener la lista de usuarios");
                 }
+                
             }
             catch (Exception ex)
             {

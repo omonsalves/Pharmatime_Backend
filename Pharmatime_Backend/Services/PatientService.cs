@@ -1,5 +1,5 @@
 ﻿
-using Pharmatime_Backend.Models;
+using Pharmatime_Backend.Repositories.Models;
 using Pharmatime_Backend.Repositories;
 
 public class PatientService
@@ -52,7 +52,7 @@ public class PatientService
                 Mensaje = "Cambios registrados correctamente",
                 Code = 200
             };
-
+        
         }
 
         return respuestaJson;
@@ -74,7 +74,7 @@ public class PatientService
                 Mensaje = "Paciente Eliminado correctamente",
                 Code = 200
             };
-
+        
         }
 
         return respuestaJson;

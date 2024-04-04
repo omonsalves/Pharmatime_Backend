@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Pharmatime_Backend.Models;
+using Pharmatime_Backend.Repositories.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -9,13 +9,13 @@ namespace Pharmatime_Backend.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        
-        private  readonly PHARMATIMEContext _context;
 
-        public UserController(PHARMATIMEContext context)
-        {
-            _context = context; 
-        }
+         private  readonly PHARMATIME_DBContext _context;
+        
+         public UserController(PHARMATIME_DBContext context)
+         {
+             _context = context; 
+         }
 
         // POST api/<UserController>
         [HttpPost("Register")]

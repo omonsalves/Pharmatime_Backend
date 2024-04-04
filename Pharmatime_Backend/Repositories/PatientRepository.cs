@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Pharmatime_Backend.Models;
+using Pharmatime_Backend.Repositories.Models;
 using Pharmatime_Backend.Utilities;
 using System;
 
@@ -17,12 +17,12 @@ namespace Pharmatime_Backend.Repositories
 
             for (int i = 0; i < 6; i++)
             {
-                contraseña += random.Next(0, 10); 
+                contraseña += random.Next(0, 10);
             }
 
-            
 
-            using (var context = new PHARMATIMEContext())
+
+            using (var context = new PHARMATIME_DBContext())
             {
                 try
                 {
@@ -39,7 +39,7 @@ namespace Pharmatime_Backend.Repositories
                             Telefono = model.Telefono,
                             Edad = model.Edad,
                             Correo = model.Correo,
-                            Contraseña = e.EncryptPassword(contraseña),
+                            Contrasena = e.EncryptPassword(contraseña),
                             TipoUsuario = 2
 
 
@@ -64,9 +64,10 @@ namespace Pharmatime_Backend.Repositories
 
 
 
+
         public List<object> ReadPatient()
         {
-            using (var context = new PHARMATIMEContext())
+            using (var context = new PHARMATIME_DBContext())
             {
                 try
                 {
@@ -96,7 +97,7 @@ namespace Pharmatime_Backend.Repositories
 
         public static bool UpdatePatient(UpdatePatientDto model)
         {
-            using (var context = new PHARMATIMEContext())
+            using (var context = new PHARMATIME_DBContext())
             {
 
                 try
@@ -117,17 +118,17 @@ namespace Pharmatime_Backend.Repositories
                         // Guardar los cambios en la base de datos
                         context.SaveChanges();
 
-                        return true; 
+                        return true;
                     }
                     else
                     {
-                       
+
                         return false;
                     }
                 }
                 catch (Exception ex)
                 {
-                   
+
                     Console.WriteLine($"Error al editar el usuario: {ex.Message}");
                     return false;
                 }
@@ -137,7 +138,7 @@ namespace Pharmatime_Backend.Repositories
 
         public static bool DeletePatient(DeletePatientDto model)
         {
-            using (var context = new PHARMATIMEContext())
+            using (var context = new PHARMATIME_DBContext())
             {
                 try
                 {
@@ -150,17 +151,17 @@ namespace Pharmatime_Backend.Repositories
                         context.Usuarios.Remove(usuario);
                         context.SaveChanges();
 
-                        return true; 
+                        return true;
                     }
                     else
                     {
-                        
+
                         return false;
                     }
                 }
                 catch (Exception ex)
                 {
-                    
+
                     Console.WriteLine($"Error al eliminar el usuario: {ex.Message}");
                     return false;
                 }
@@ -171,3 +172,5 @@ namespace Pharmatime_Backend.Repositories
 
     }
 }
+
+

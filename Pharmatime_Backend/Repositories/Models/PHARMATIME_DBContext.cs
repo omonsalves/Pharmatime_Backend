@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Pharmatime_Backend.Models
+namespace Pharmatime_Backend.Repositories.Models
 {
-    public partial class PHARMATIMEContext : DbContext
+    public partial class PHARMATIME_DBContext : DbContext
     {
-        public PHARMATIMEContext()
+        public PHARMATIME_DBContext()
         {
         }
 
-        public PHARMATIMEContext(DbContextOptions<PHARMATIMEContext> options)
+        public PHARMATIME_DBContext(DbContextOptions<PHARMATIME_DBContext> options)
             : base(options)
         {
         }
@@ -31,7 +31,7 @@ namespace Pharmatime_Backend.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=localhost;Database=PHARMATIME;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=localhost;Database=PHARMATIME_DB;Trusted_Connection=True;");
             }
         }
 
@@ -40,7 +40,7 @@ namespace Pharmatime_Backend.Models
             modelBuilder.Entity<Auditorium>(entity =>
             {
                 entity.HasKey(e => e.IdAuditoria)
-                    .HasName("PK__AUDITORI__9644A3CEBF7A3C8E");
+                    .HasName("PK__AUDITORI__9644A3CE95613234");
 
                 entity.ToTable("AUDITORIA");
 
@@ -85,7 +85,7 @@ namespace Pharmatime_Backend.Models
             modelBuilder.Entity<Enfermedad>(entity =>
             {
                 entity.HasKey(e => e.IdEnfermedad)
-                    .HasName("PK__ENFERMED__D027B3A079194770");
+                    .HasName("PK__ENFERMED__D027B3A00B0966AD");
 
                 entity.ToTable("ENFERMEDAD");
 
@@ -105,7 +105,7 @@ namespace Pharmatime_Backend.Models
             modelBuilder.Entity<GeneroUsuario>(entity =>
             {
                 entity.HasKey(e => e.IdGenero)
-                    .HasName("PK__GENERO_U__99A8E4F9731C4102");
+                    .HasName("PK__GENERO_U__99A8E4F994262307");
 
                 entity.ToTable("GENERO_USUARIO");
 
@@ -120,7 +120,7 @@ namespace Pharmatime_Backend.Models
             modelBuilder.Entity<Medicamento>(entity =>
             {
                 entity.HasKey(e => e.IdMedicamento)
-                    .HasName("PK__MEDICAME__2588C032256F0E21");
+                    .HasName("PK__MEDICAME__2588C032FFFE0A57");
 
                 entity.ToTable("MEDICAMENTO");
 
@@ -152,7 +152,7 @@ namespace Pharmatime_Backend.Models
             modelBuilder.Entity<Rol>(entity =>
             {
                 entity.HasKey(e => e.IdRol)
-                    .HasName("PK__ROL__6ABCB5E08785857A");
+                    .HasName("PK__ROL__6ABCB5E050E799A7");
 
                 entity.ToTable("ROL");
 
@@ -167,7 +167,7 @@ namespace Pharmatime_Backend.Models
             modelBuilder.Entity<TipoPresentacion>(entity =>
             {
                 entity.HasKey(e => e.IdPresentacion)
-                    .HasName("PK__TIPO_PRE__5F94E0ED8D08CB1E");
+                    .HasName("PK__TIPO_PRE__5F94E0EDB1C9B068");
 
                 entity.ToTable("TIPO_PRESENTACION");
 
@@ -182,7 +182,7 @@ namespace Pharmatime_Backend.Models
             modelBuilder.Entity<Usuario>(entity =>
             {
                 entity.HasKey(e => e.IdUsuario)
-                    .HasName("PK__USUARIO__4E3E04AD956FB737");
+                    .HasName("PK__USUARIO__4E3E04ADEC59CA3B");
 
                 entity.ToTable("USUARIO");
 
@@ -193,10 +193,10 @@ namespace Pharmatime_Backend.Models
                     .IsUnicode(false)
                     .HasColumnName("apellido");
 
-                entity.Property(e => e.Contraseña)
-                    .HasMaxLength(200)
+                entity.Property(e => e.Contrasena)
+                    .HasMaxLength(100)
                     .IsUnicode(false)
-                    .HasColumnName("contraseña");
+                    .HasColumnName("contrasena");
 
                 entity.Property(e => e.Correo)
                     .HasMaxLength(100)
@@ -212,7 +212,10 @@ namespace Pharmatime_Backend.Models
                     .IsUnicode(false)
                     .HasColumnName("nombre");
 
-                entity.Property(e => e.Telefono).HasColumnName("telefono");
+                entity.Property(e => e.Telefono)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("telefono");
 
                 entity.Property(e => e.TipoUsuario).HasColumnName("tipo_usuario");
 
@@ -230,7 +233,7 @@ namespace Pharmatime_Backend.Models
             modelBuilder.Entity<UsuarioEnfermedad>(entity =>
             {
                 entity.HasKey(e => e.IdUsuarioEnfermedad)
-                    .HasName("PK__USUARIO___90246C64B501F37A");
+                    .HasName("PK__USUARIO___90246C647AC71488");
 
                 entity.ToTable("USUARIO_ENFERMEDAD");
 
@@ -254,7 +257,7 @@ namespace Pharmatime_Backend.Models
             modelBuilder.Entity<UsuarioMedicamento>(entity =>
             {
                 entity.HasKey(e => e.IdUsuarioMedicamento)
-                    .HasName("PK__USUARIO___ADA6D39C0B9C1C40");
+                    .HasName("PK__USUARIO___ADA6D39C4C617784");
 
                 entity.ToTable("USUARIO_MEDICAMENTO");
 

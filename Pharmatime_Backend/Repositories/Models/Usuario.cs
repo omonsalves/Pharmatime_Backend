@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Pharmatime_Backend.Models
+namespace Pharmatime_Backend.Repositories.Models
 {
     public partial class Usuario
     {
@@ -15,10 +15,10 @@ namespace Pharmatime_Backend.Models
         public string? Nombre { get; set; }
         public string? Apellido { get; set; }
         public int? Genero { get; set; }
-        public int? Telefono { get; set; }
+        public string? Telefono { get; set; }
         public int? Edad { get; set; }
         public string? Correo { get; set; }
-        public string? Contraseña { get; set; }
+        public string? Contrasena { get; set; }
         public int? TipoUsuario { get; set; }
 
         public virtual GeneroUsuario? GeneroNavigation { get; set; }

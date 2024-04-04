@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Pharmatime_Backend.Models
+namespace Pharmatime_Backend.Repositories.Models
 {
     public partial class GeneroUsuario
     {
