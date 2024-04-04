@@ -29,7 +29,7 @@ namespace Pharmatime_Backend.Controllers
 
 
         [HttpPost("ReadPatient")]
-        public IActionResult ObtenerUsuarios()
+        public IActionResult ReadPatient()
         {
             try
             {
@@ -74,6 +74,57 @@ namespace Pharmatime_Backend.Controllers
         {
             var us = new PatientService();
             var result = us.PatientDelete(patient);
+            return StatusCode(result.Code, result);
+
+        }
+
+
+        [HttpPost("ReadDrug")]
+        public IActionResult ReadDrug()
+        {
+            try
+            {
+                var us = new DrugsRepository();
+                var pa = new DrugsService();
+                
+                var drugs = us.ReadDrugs();
+
+                var drugsList = pa.ListDrugs(drugs);
+
+                if (drugsList != null)
+                {
+                    
+                    return Ok(new { StatusCode = 200, drugsList = drugsList });
+                }
+                else
+                {
+                    
+                    return StatusCode(500, "No se pudo obtener la lista de medicamentos");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                
+                return StatusCode(500, $"Error al procesar la solicitud: {ex.Message}");
+            }
+        }
+
+
+        [HttpPost("AssignDrugs")]
+        public IActionResult AssignDrugs([FromBody] AssignDrugsDto drugsPatient)
+        {
+            var us = new DrugsService();
+            var result = us.AssingnDrugsRegister(drugsPatient);
+            return StatusCode(result.Code, result);
+
+        }
+
+        [HttpPost("RequestNewDrugs")]
+        public IActionResult RequestNewDrugs([FromBody] MailNewDrugsDto newDrugs)
+        {
+            var us = new DrugsService();
+            var result = us.MailRequestNewdrugs(newDrugs);
             return StatusCode(result.Code, result);
 
         }
