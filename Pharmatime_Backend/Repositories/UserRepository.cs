@@ -23,7 +23,7 @@ public class UserRepository
                  {
                      var user = new Usuario()
                      {
-    
+                         IdUsuario = model.IdUsuario,
                          Nombre = model.Nombre,
                          Apellido = model.Apellido,
                          Genero = model.Genero,
@@ -31,7 +31,8 @@ public class UserRepository
                          Edad = model.Edad,
                          Correo = model.Correo,
                          Contrasena = e.EncryptPassword(model.Contrasena),
-                         TipoUsuario = 1
+                         TipoUsuario = 1,
+                         Estado = 1
                      };
     
                      context.Usuarios.Add(user);
@@ -102,22 +103,46 @@ public class UserRepository
              using (var context = new PHARMATIME_DBContext())
              {
     
-                 var usuario = context.Usuarios.FirstOrDefault(u => u.Correo == model.Destinatario);
+                 var user = context.Usuarios.FirstOrDefault(u => u.Correo == model.Destinatario);
     
-                 if (usuario != null)
+                 if (user != null)
                  {
                      string Cencrypt = e.EncryptPassword(contraseña);
-                     usuario.Contrasena = Cencrypt;
+                     user.Contrasena = Cencrypt;
+                     user.Estado = 3;
     
                      context.SaveChanges();
     
-                 
-    
-    
+              
                       string asunto = "Recuperación de contraseña Pharmatime";
-                      string mensaje = "La nueva contraseña para su cuenta de pharmatime es:" + contraseña;
-    
-                      MailMessage mail = new MailMessage();
+                      string mensaje = @"
+                            <html>
+                            <head>
+                                <style>
+                                    body {
+                                        font-family: Arial, sans-serif;
+                                    }
+                                    h1 {
+                                        color: #333333;
+                                    }
+                                    p {
+                                        color: #666666;
+                                    }
+                                </style>
+                            </head>
+                            <body>
+                                                                
+                                <h5>Recuperación de contraseña de su cuenta pharmatime</h5>
+                                <p>La nueva contraseña para su cuenta de pharmatime es:</p>
+                                
+                                <p><span style='color: #008CBA;'>[contraseña]</span></p>
+                                
+                                <p>Si necesita más información o tiene alguna pregunta, no dude en ponerse en contacto con nosotros.</p>
+                            </body>
+                            </html>";
+
+                    mensaje = mensaje.Replace("[contraseña]", contraseña);
+                    MailMessage mail = new MailMessage();
                       mail.To.Add(model.Destinatario);
                       mail.From = new MailAddress("pharmatime8@gmail.com");
                       mail.Subject = asunto;
@@ -146,4 +171,38 @@ public class UserRepository
     
          return resultado;
      }
+
+    public static bool ChangePassword(ChagePasswordDto model)
+    {
+        Encript e = new Encript();
+        using (var context = new PHARMATIME_DBContext())
+        {
+
+            try
+            {
+                var user = context.Usuarios.Where(u => u.TipoUsuario == 2).FirstOrDefault(u => u.IdUsuario == model.IdUsuario);
+
+                if (user != null)
+                {
+                    user.Contrasena = e.EncryptPassword(model.Contrasena);
+                    user.Estado = 1;
+                    context.SaveChanges();
+                    
+                    return true;
+                }
+                else
+                {
+
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine($"Error al editar el usuario: {ex.Message}");
+                return false;
+            }
+        }
+    }
+
 }

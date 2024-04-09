@@ -42,5 +42,13 @@ namespace Pharmatime_Backend.Controllers
             return StatusCode(result.Code, result);
         }
 
+        [HttpPost("ChangePassword")]
+        public IActionResult ChangePassword([FromBody] ChagePasswordDto model)
+        {
+            var us = new UserService();
+            var result = us.ChagePassword(model);
+            return StatusCode(result.Code, result);
+        }
+
     }
 }

@@ -1,6 +1,8 @@
 ﻿
 using Pharmatime_Backend.Repositories.Models;
 using Pharmatime_Backend.Utilities;
+using System.Net.Mail;
+using System.Net;
 
 
 namespace Pharmatime_Backend.Repositories
@@ -32,7 +34,7 @@ namespace Pharmatime_Backend.Repositories
                     {
                         var user = new Usuario()
                         {
-
+                            IdUsuario = model.IdUsuario,
                             Nombre = model.Nombre,
                             Apellido = model.Apellido,
                             Genero = model.Genero,
@@ -40,16 +42,60 @@ namespace Pharmatime_Backend.Repositories
                             Edad = model.Edad,
                             Correo = model.Correo,
                             Contrasena = e.EncryptPassword(contraseña),
-                            TipoUsuario = 2
-
-
+                            TipoUsuario = 2,
+                            Estado = 3
                         };
 
                         context.Usuarios.Add(user);
                         context.SaveChanges();
+                        
+
+                        string asunto = "Creación de cuenta en Pharmatime";
+                        string mensaje = @"
+                            <html>
+                            <head>
+                                <style>
+                                    body {
+                                        font-family: Arial, sans-serif;
+                                    }
+                                    h1 {
+                                        color: #333333;
+                                    }
+                                    p {
+                                        color: #666666;
+                                    }
+                                </style>
+                            </head>
+                            <body>
+                                <img src=""https://i.ibb.co/cQ4qwyL/bienvenida.jpg"" alt=""Descripción de la imagen"">                                
+                                <h5>Bienvenido a Pharmatime</h5>
+                                <p>La nueva contraseña para su cuenta de pharmatime es:</p>
+                                
+                                <p><span style='color: #008CBA;'>[contraseña]</span></p>
+                                
+                                <p>Si necesita más información o tiene alguna pregunta, no dude en ponerse en contacto con nosotros.</p>
+                            </body>
+                            </html>";
+
+                        mensaje = mensaje.Replace("[contraseña]", contraseña);
+                        MailMessage mail = new MailMessage();
+                        mail.To.Add(user.Correo);
+                        mail.From = new MailAddress("pharmatime8@gmail.com");
+                        mail.Subject = asunto;
+                        mail.Body = mensaje;
+                        mail.IsBodyHtml = true;
+
+                        var smtp = new SmtpClient()
+                        {
+                            Credentials = new NetworkCredential("pharmatime8@gmail.com", "huejdvhbfjbkvgjc"),
+                            Host = "smtp.gmail.com",
+                            Port = 587,
+                            EnableSsl = true
+                        };
+
+                        smtp.Send(mail);
                         return true;
                     }
-
                     return false;
 
                 }
@@ -75,6 +121,7 @@ namespace Pharmatime_Backend.Repositories
                         .Where(u => u.TipoUsuario == 2)
                         .Select(u => new
                         {
+                            IdUsuario = u.IdUsuario,
                             Nombre = u.Nombre,
                             Apellido = u.Apellido,
                             Genero = u.Genero,
@@ -147,10 +194,8 @@ namespace Pharmatime_Backend.Repositories
 
                     if (usuario != null)
                     {
-                        // Eliminar el usuario de la base de datos
-                        context.Usuarios.Remove(usuario);
+                        usuario.Estado = 2;
                         context.SaveChanges();
-
                         return true;
                     }
                     else

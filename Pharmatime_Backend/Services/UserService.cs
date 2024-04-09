@@ -10,7 +10,7 @@ public class UserService
 	{
         var respuestaJson = new ResultDto()
         {
-            Mensaje = "El correo del usuario ya se encuentra registrado",
+            Mensaje = "Error al registrar el usuario",
             Code = 400
         };
 
@@ -19,7 +19,7 @@ public class UserService
             respuestaJson = new ResultDto()
             {
                 Mensaje = "Usuario registrado correctamente",
-                Code = 201
+                Code = 200
             };
             
         }
@@ -31,8 +31,8 @@ public class UserService
     {
         var respuestaJson = new ResultDto()
         {
-            Mensaje = "Credenciales incorrectas ",
-            Code = 401
+            Mensaje = "Credenciales incorrectas",
+            Code = 400
         };
 
         if (UserRepository.Login(model.Correo, model.Contrasena))
@@ -52,7 +52,7 @@ public class UserService
         var respuestaJson = new ResultDto()
         {
             Mensaje = "Error al enviar el correo",
-            Code = 401
+            Code = 400
         };
 
         if (UserRepository.Mail(destinatario))
@@ -66,6 +66,29 @@ public class UserService
 
         return respuestaJson;
     }
+    
+    public ResultDto ChagePassword(ChagePasswordDto model)
+    {
+        
+        var respuestaJson = new ResultDto()
+        {
+            Mensaje = "Error al cambiar la contraseña",
+            Code = 400
+        };
+
+        if (UserRepository.ChangePassword(model))
+        {
+            respuestaJson = new ResultDto()
+            {
+                Mensaje = "Contraseña actualizada correctamente",
+                Code = 200
+            };
+        }
+
+        return respuestaJson;
+    }
+
+
 
 
 

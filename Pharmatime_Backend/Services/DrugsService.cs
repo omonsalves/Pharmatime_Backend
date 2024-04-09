@@ -6,8 +6,29 @@ using Pharmatime_Backend.Repositories;
   public class DrugsService
   {
 
-     public List<object> ListDrugs(List<object> drugs)
-     {
+    public ResultDto DrugsRegister(RegisterDrugsDto drug)
+    {
+        var respuestaJson = new ResultDto()
+        {
+            Mensaje = "Error al registrar el medicamento",
+            Code = 400
+        };
+
+        if (DrugsRepository.RegisterDrugs(drug))
+        {
+            respuestaJson = new ResultDto()
+            {
+                Mensaje = "Medicamento registrado corretamente en la base de datos",
+                Code = 200
+            };
+
+        }
+
+        return respuestaJson;
+    }
+
+    public List<object> ListDrugs(List<object> drugs)
+    {
          if (drugs != null && drugs.Any())
          {
              return drugs;
@@ -16,14 +37,14 @@ using Pharmatime_Backend.Repositories;
          {
              throw new InvalidOperationException("La lista de Medicamentos está vacía o nula.");
          }
-     }
+    }
 
 
     public ResultDto AssingnDrugsRegister(AssignDrugsDto drugsPatient)
     {
         var respuestaJson = new ResultDto()
         {
-            Mensaje = "El usuario no existe en la base de datos",
+            Mensaje = "Error al asignar el medicamento",
             Code = 400
         };
 

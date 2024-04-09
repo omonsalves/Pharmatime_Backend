@@ -18,6 +18,7 @@ namespace Pharmatime_Backend.Repositories.Models
 
         public virtual DbSet<Auditorium> Auditoria { get; set; } = null!;
         public virtual DbSet<Enfermedad> Enfermedads { get; set; } = null!;
+        public virtual DbSet<Estado> Estados { get; set; } = null!;
         public virtual DbSet<GeneroUsuario> GeneroUsuarios { get; set; } = null!;
         public virtual DbSet<Medicamento> Medicamentos { get; set; } = null!;
         public virtual DbSet<Rol> Rols { get; set; } = null!;
@@ -102,6 +103,21 @@ namespace Pharmatime_Backend.Repositories.Models
                     .HasColumnName("nombre");
             });
 
+            modelBuilder.Entity<Estado>(entity =>
+            {
+                entity.HasKey(e => e.IdEstado)
+                    .HasName("PK__ESTADO__86989FB2448AD971");
+
+                entity.ToTable("ESTADO");
+
+                entity.Property(e => e.IdEstado).HasColumnName("id_estado");
+
+                entity.Property(e => e.Nombre)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("nombre");
+            });
+
             modelBuilder.Entity<GeneroUsuario>(entity =>
             {
                 entity.HasKey(e => e.IdGenero)
@@ -125,6 +141,8 @@ namespace Pharmatime_Backend.Repositories.Models
                 entity.ToTable("MEDICAMENTO");
 
                 entity.Property(e => e.IdMedicamento).HasColumnName("id_medicamento");
+
+                entity.Property(e => e.Activo).HasColumnName("activo");
 
                 entity.Property(e => e.Contraindicaciones)
                     .HasMaxLength(200)
@@ -182,11 +200,13 @@ namespace Pharmatime_Backend.Repositories.Models
             modelBuilder.Entity<Usuario>(entity =>
             {
                 entity.HasKey(e => e.IdUsuario)
-                    .HasName("PK__USUARIO__4E3E04ADEC59CA3B");
+                    .HasName("PK__USUARIO__4E3E04AD431A6528");
 
                 entity.ToTable("USUARIO");
 
-                entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
+                entity.Property(e => e.IdUsuario)
+                    .ValueGeneratedNever()
+                    .HasColumnName("id_usuario");
 
                 entity.Property(e => e.Apellido)
                     .HasMaxLength(20)
@@ -205,6 +225,8 @@ namespace Pharmatime_Backend.Repositories.Models
 
                 entity.Property(e => e.Edad).HasColumnName("edad");
 
+                entity.Property(e => e.Estado).HasColumnName("estado");
+
                 entity.Property(e => e.Genero).HasColumnName("genero");
 
                 entity.Property(e => e.Nombre)
@@ -219,21 +241,26 @@ namespace Pharmatime_Backend.Repositories.Models
 
                 entity.Property(e => e.TipoUsuario).HasColumnName("tipo_usuario");
 
+                entity.HasOne(d => d.EstadoNavigation)
+                    .WithMany(p => p.Usuarios)
+                    .HasForeignKey(d => d.Estado)
+                    .HasConstraintName("FK__USUARIO__estado__6C190EBB");
+
                 entity.HasOne(d => d.GeneroNavigation)
                     .WithMany(p => p.Usuarios)
                     .HasForeignKey(d => d.Genero)
-                    .HasConstraintName("FK__USUARIO__genero__3D5E1FD2");
+                    .HasConstraintName("FK__USUARIO__genero__6A30C649");
 
                 entity.HasOne(d => d.TipoUsuarioNavigation)
                     .WithMany(p => p.Usuarios)
                     .HasForeignKey(d => d.TipoUsuario)
-                    .HasConstraintName("FK__USUARIO__tipo_us__3E52440B");
+                    .HasConstraintName("FK__USUARIO__tipo_us__6B24EA82");
             });
 
             modelBuilder.Entity<UsuarioEnfermedad>(entity =>
             {
                 entity.HasKey(e => e.IdUsuarioEnfermedad)
-                    .HasName("PK__USUARIO___90246C647AC71488");
+                    .HasName("PK__USUARIO___90246C6412707F6B");
 
                 entity.ToTable("USUARIO_ENFERMEDAD");
 
@@ -246,18 +273,18 @@ namespace Pharmatime_Backend.Repositories.Models
                 entity.HasOne(d => d.IdEnfermedadNavigation)
                     .WithMany(p => p.UsuarioEnfermedads)
                     .HasForeignKey(d => d.IdEnfermedad)
-                    .HasConstraintName("FK__USUARIO_E__id_en__4222D4EF");
+                    .HasConstraintName("FK__USUARIO_E__id_en__6FE99F9F");
 
                 entity.HasOne(d => d.IdUsuarioNavigation)
                     .WithMany(p => p.UsuarioEnfermedads)
                     .HasForeignKey(d => d.IdUsuario)
-                    .HasConstraintName("FK__USUARIO_E__id_us__412EB0B6");
+                    .HasConstraintName("FK__USUARIO_E__id_us__6EF57B66");
             });
 
             modelBuilder.Entity<UsuarioMedicamento>(entity =>
             {
                 entity.HasKey(e => e.IdUsuarioMedicamento)
-                    .HasName("PK__USUARIO___ADA6D39C4C617784");
+                    .HasName("PK__USUARIO___ADA6D39C1A6225F5");
 
                 entity.ToTable("USUARIO_MEDICAMENTO");
 
@@ -282,12 +309,12 @@ namespace Pharmatime_Backend.Repositories.Models
                 entity.HasOne(d => d.IdMedicamentoNavigation)
                     .WithMany(p => p.UsuarioMedicamentos)
                     .HasForeignKey(d => d.IdMedicamento)
-                    .HasConstraintName("FK__USUARIO_M__id_me__4AB81AF0");
+                    .HasConstraintName("FK__USUARIO_M__id_me__73BA3083");
 
                 entity.HasOne(d => d.IdUsuarioNavigation)
                     .WithMany(p => p.UsuarioMedicamentos)
                     .HasForeignKey(d => d.IdUsuario)
-                    .HasConstraintName("FK__USUARIO_M__id_us__49C3F6B7");
+                    .HasConstraintName("FK__USUARIO_M__id_us__72C60C4A");
             });
 
             OnModelCreatingPartial(modelBuilder);

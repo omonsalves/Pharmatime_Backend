@@ -8,6 +8,43 @@ namespace Pharmatime_Backend.Repositories
     public class DrugsRepository
     {
 
+        public static bool RegisterDrugs(RegisterDrugsDto model)
+        {
+           
+            using (var context = new PHARMATIME_DBContext())
+            {
+                try
+                {
+                    var Drug = context.Medicamentos.SingleOrDefault(u => u.Nombre == model.Nombre);
+
+                    if (Drug == null)
+                    {
+                        var Drugs = new Medicamento()
+                        {
+
+                            Nombre = model.Nombre,
+                            SirvePara = model.sirve_para,
+                            Presentacion = model.Presentacion,
+                            Contraindicaciones = model.contraindicaciones
+                        };
+
+                        context.Medicamentos.Add(Drugs);
+                        context.SaveChanges();
+                        return true;
+                    }
+
+                    return false;
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error al guardar el medicamento: {ex.Message}");
+                    return false;
+                }
+
+            }
+        }
+
 
         public List<object> ReadDrugs()
         {
@@ -45,7 +82,7 @@ namespace Pharmatime_Backend.Repositories
                 try
                 {
                     var user = context.Usuarios.SingleOrDefault(u => u.IdUsuario == model.id_usuario);
-
+                    
                     if (user != null)
                     {
                         var DrugsPatient = new UsuarioMedicamento()
@@ -88,7 +125,37 @@ namespace Pharmatime_Backend.Repositories
                     {
 
                         string asunto = "Solicitud Nuevo Medicamento";
-                        string mensaje = "Nombre del medicamento: " + model.Medicamento + " El paciente lo usa para: " + model.UsoDado;
+                        string mensaje = @"
+                            <html>
+                            <head>
+                                <style>
+                                    body {
+                                        font-family: Arial, sans-serif;
+                                    }
+                                    h1 {
+                                        color: #333333;
+                                    }
+                                    p {
+                                        color: #666666;
+                                    }
+                                </style>
+                            </head>
+                            <body>
+                                                                
+                                <p>Medicamento: <span style='color: #008CBA;'>[Nombre del medicamento]</span></p>
+                                
+                                <p>El paciente lo usa para:</p>
+                                
+                                <p><span style='color: #008CBA;'>[Uso del medicamento]</span></p>
+                                
+                                <p>Si necesita más información o tiene alguna pregunta, no dude en ponerse en contacto con nosotros.</p>
+                            </body>
+                            </html>";
+
+
+                        mensaje = mensaje.Replace("[Nombre del medicamento]", model.Medicamento);
+                        mensaje = mensaje.Replace("[Uso del medicamento]", model.UsoDado);
+
                         string destinatario = "monsalveserrato42@gmail.com";
                         MailMessage mail = new MailMessage();
                         mail.To.Add(destinatario);

@@ -8,7 +8,7 @@ public class PatientService
         {
             var respuestaJson = new ResultDto()
             {
-                Mensaje = "El correo del usuario ya se encuentra registrado",
+                Mensaje = "Error al registrar paciente",
                 Code = 400
             };
 
@@ -16,8 +16,8 @@ public class PatientService
             {
                 respuestaJson = new ResultDto()
                 {
-                    Mensaje = "Usuario registrado correctamente",
-                    Code = 201
+                    Mensaje = "Paciente registrado correctamente",
+                    Code = 200
                 };
 
             }
@@ -42,7 +42,7 @@ public class PatientService
         var respuestaJson = new ResultDto()
         {
             Mensaje = "Error al actualizar datos",
-            Code = 403
+            Code = 400
         };
 
         if (PatientRepository.UpdatePatient(patient))
@@ -63,15 +63,15 @@ public class PatientService
     {
         var respuestaJson = new ResultDto()
         {
-            Mensaje = "Error al eliminar el paciente",
-            Code = 403
+            Mensaje = "Error al Inhabilitar el paciente",
+            Code = 400
         };
 
         if (PatientRepository.DeletePatient(patient))
         {
             respuestaJson = new ResultDto()
             {
-                Mensaje = "Paciente Eliminado correctamente",
+                Mensaje = "Paciente Inhabilitado correctamente",
                 Code = 200
             };
         

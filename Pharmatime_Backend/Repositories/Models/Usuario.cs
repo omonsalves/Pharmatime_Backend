@@ -20,7 +20,9 @@ namespace Pharmatime_Backend.Repositories.Models
         public string? Correo { get; set; }
         public string? Contrasena { get; set; }
         public int? TipoUsuario { get; set; }
+        public int? Estado { get; set; }
 
+        public virtual Estado? EstadoNavigation { get; set; }
         public virtual GeneroUsuario? GeneroNavigation { get; set; }
         public virtual Rol? TipoUsuarioNavigation { get; set; }
         public virtual ICollection<UsuarioEnfermedad> UsuarioEnfermedads { get; set; }
