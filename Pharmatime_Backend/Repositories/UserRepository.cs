@@ -88,6 +88,7 @@ public class UserRepository
      public static bool Mail(MailDto model)
      {
          Encript e = new Encript();
+         Mail m = new Mail();
          bool resultado = false;
          try
          {
@@ -140,25 +141,9 @@ public class UserRepository
                                 <p>Si necesita más información o tiene alguna pregunta, no dude en ponerse en contacto con nosotros.</p>
                             </body>
                             </html>";
-
                     mensaje = mensaje.Replace("[contraseña]", contraseña);
-                    MailMessage mail = new MailMessage();
-                      mail.To.Add(model.Destinatario);
-                      mail.From = new MailAddress("pharmatime8@gmail.com");
-                      mail.Subject = asunto;
-                      mail.Body = mensaje;
-                      mail.IsBodyHtml = true;
-    
-                      var smtp = new SmtpClient()
-                      {
-                          Credentials = new NetworkCredential("pharmatime8@gmail.com", "huejdvhbfjbkvgjc"),
-                          Host = "smtp.gmail.com",
-                          Port = 587,
-                          EnableSsl = true
-                      };
-    
-                      smtp.Send(mail);
-                      resultado = true;
+                    m.SendMail(model.Destinatario, asunto, mensaje);
+                    resultado = true;
     
                  }
              }
@@ -180,7 +165,7 @@ public class UserRepository
 
             try
             {
-                var user = context.Usuarios.Where(u => u.TipoUsuario == 2).FirstOrDefault(u => u.IdUsuario == model.IdUsuario);
+                var user = context.Usuarios.FirstOrDefault(u => u.IdUsuario == model.IdUsuario);
 
                 if (user != null)
                 {
@@ -204,5 +189,41 @@ public class UserRepository
             }
         }
     }
+    
+    
+    public static bool RecoverAccount(DeletePatientDto model)
+    {
+        Encript e = new Encript();
+        using (var context = new PHARMATIME_DBContext())
+        {
+
+            try
+            {
+                var user = context.Usuarios.FirstOrDefault(u => u.IdUsuario == model.IdUsuario);
+
+                if (user != null)
+                {
+                    user.Estado = 1;
+                    context.SaveChanges();
+                    
+                    return true;
+                }
+                else
+                {
+
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine($"Error al editar el usuario: {ex.Message}");
+                return false;
+            }
+        }
+    }
+
+
+
 
 }

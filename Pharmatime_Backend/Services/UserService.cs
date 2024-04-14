@@ -87,6 +87,27 @@ public class UserService
 
         return respuestaJson;
     }
+    
+    public ResultDto RecoverAccount(DeletePatientDto model)
+    {
+        
+        var respuestaJson = new ResultDto()
+        {
+            Mensaje = "Error al recuperar cuenta",
+            Code = 400
+        };
+
+        if (UserRepository.RecoverAccount(model))
+        {
+            respuestaJson = new ResultDto()
+            {
+                Mensaje = "Cuenta habilitada correctamente",
+                Code = 200
+            };
+        }
+
+        return respuestaJson;
+    }
 
 
 

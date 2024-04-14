@@ -58,5 +58,14 @@ namespace Pharmatime_Backend.Controllers
             return StatusCode(result.Code, result);
 
         }
+        
+        [HttpPost("AssignDrugs")]
+        public IActionResult AssignDrugs([FromBody] AssignDrugsDto assign)
+        {
+            var us = new DrugsService();
+            var result = us.AssingnDrugsRegister(assign);
+            return StatusCode(result.Code, result);
+
+        }
     }
 }

@@ -49,6 +49,14 @@ namespace Pharmatime_Backend.Controllers
             var result = us.ChagePassword(model);
             return StatusCode(result.Code, result);
         }
+        
+        [HttpPost("RecoverAccount")]
+        public IActionResult RecoverAccount([FromBody] DeletePatientDto model)
+        {
+            var us = new UserService();
+            var result = us.RecoverAccount(model);
+            return StatusCode(result.Code, result);
+        }
 
     }
 }

@@ -56,6 +56,7 @@ namespace Pharmatime_Backend.Repositories
                     var drugs = context.Medicamentos
                         .Select(u => new
                         {
+                            IdMedicamento = u.IdMedicamento,
                             Nombre = u.Nombre,
                             SirvePara = u.SirvePara,
                             Presentacion = u.Presentacion,

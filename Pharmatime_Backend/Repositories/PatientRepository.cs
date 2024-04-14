@@ -13,6 +13,7 @@ namespace Pharmatime_Backend.Repositories
         public static bool RegisterPatient(CreatePatientDto model)
         {
             Encript e = new Encript();
+            Mail m = new Mail();
             Random random = new Random();
 
             string contraseña = "";
@@ -78,22 +79,9 @@ namespace Pharmatime_Backend.Repositories
                             </html>";
 
                         mensaje = mensaje.Replace("[contraseña]", contraseña);
-                        MailMessage mail = new MailMessage();
-                        mail.To.Add(user.Correo);
-                        mail.From = new MailAddress("pharmatime8@gmail.com");
-                        mail.Subject = asunto;
-                        mail.Body = mensaje;
-                        mail.IsBodyHtml = true;
 
-                        var smtp = new SmtpClient()
-                        {
-                            Credentials = new NetworkCredential("pharmatime8@gmail.com", "huejdvhbfjbkvgjc"),
-                            Host = "smtp.gmail.com",
-                            Port = 587,
-                            EnableSsl = true
-                        };
+                        m.SendMail(model.Correo, asunto, mensaje);
 
-                        smtp.Send(mail);
                         return true;
                     }
                     return false;
