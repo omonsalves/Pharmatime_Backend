@@ -67,5 +67,23 @@ namespace Pharmatime_Backend.Controllers
             return StatusCode(result.Code, result);
 
         }
+        
+        [HttpPost("DeleteDrug")]
+        public IActionResult DeleteDrug([FromBody] DeleteDrugDto drug)
+        {
+            var us = new DrugsService();
+            var result = us.DeleteDrug(drug);
+            return StatusCode(result.Code, result);
+
+        }
+
+        [HttpPost("RecoverDrug")]
+        public IActionResult RecoverDrug([FromBody] DeleteDrugDto drug)
+        {
+            var us = new DrugsService();
+            var result = us.RecoverDrug(drug);
+            return StatusCode(result.Code, result);
+
+        }
     }
 }

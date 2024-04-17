@@ -15,8 +15,9 @@ namespace Pharmatime_Backend.Repositories.Models
         public string? SirvePara { get; set; }
         public int? Presentacion { get; set; }
         public string? Contraindicaciones { get; set; }
-        public int? Activo { get; set; }
+        public int? Estado { get; set; }
 
+        public virtual Estado? EstadoNavigation { get; set; }
         public virtual TipoPresentacion? PresentacionNavigation { get; set; }
         public virtual ICollection<UsuarioMedicamento> UsuarioMedicamentos { get; set; }
     }

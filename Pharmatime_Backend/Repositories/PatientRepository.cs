@@ -103,23 +103,29 @@ namespace Pharmatime_Backend.Repositories
         {
             using (var context = new PHARMATIME_DBContext())
             {
+
                 try
                 {
-                    var usuarios = context.Usuarios
-                        .Where(u => u.TipoUsuario == 2)
-                        .Select(u => new
-                        {
-                            IdUsuario = u.IdUsuario,
-                            Nombre = u.Nombre,
-                            Apellido = u.Apellido,
-                            Genero = u.Genero,
-                            Telefono = u.Telefono,
-                            Edad = u.Edad,
-                            Correo = u.Correo
-                        })
-                        .ToList<object>();
+                    var user = context.Usuarios.FirstOrDefault(u => u.Estado == 1);
+                    if (user != null)
+                    {
+                        var usuarios = context.Usuarios
+                           .Where(u => u.TipoUsuario == 2)
+                           .Select(u => new
+                           {
+                               IdUsuario = u.IdUsuario,
+                               Nombre = u.Nombre,
+                               Apellido = u.Apellido,
+                               Genero = u.Genero,
+                               Telefono = u.Telefono,
+                               Edad = u.Edad,
+                               Correo = u.Correo
+                           })
+                           .ToList<object>();
 
-                    return usuarios;
+                        return usuarios;
+                    }
+                    return null;
                 }
                 catch (Exception ex)
                 {

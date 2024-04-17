@@ -82,5 +82,48 @@ using Pharmatime_Backend.Repositories;
         return respuestaJson;
     }
 
+
+    public ResultDto DeleteDrug(DeleteDrugDto model)
+    {
+        var respuestaJson = new ResultDto()
+        {
+            Mensaje = "Error al inhabilitar el medicamento",
+            Code = 400
+        };
+
+        if (DrugsRepository.DeleteDrug(model))
+        {
+            respuestaJson = new ResultDto()
+            {
+                Mensaje = "Medicamento inhabilitado correctamente",
+                Code = 200
+            };
+
+        }
+
+        return respuestaJson;
+    }
+    
+    public ResultDto RecoverDrug(DeleteDrugDto model)
+    {
+        var respuestaJson = new ResultDto()
+        {
+            Mensaje = "Error al habilitar el medicamento",
+            Code = 400
+        };
+
+        if (DrugsRepository.RecoverDrug(model))
+        {
+            respuestaJson = new ResultDto()
+            {
+                Mensaje = "Medicamento habilitado correctamente",
+                Code = 200
+            };
+
+        }
+
+        return respuestaJson;
+    }
+
 }
 

@@ -25,7 +25,8 @@ namespace Pharmatime_Backend.Repositories
                             Nombre = model.Nombre,
                             SirvePara = model.sirve_para,
                             Presentacion = model.Presentacion,
-                            Contraindicaciones = model.contraindicaciones
+                            Contraindicaciones = model.contraindicaciones,
+                            Estado = 1
                         };
 
                         context.Medicamentos.Add(Drugs);
@@ -52,19 +53,23 @@ namespace Pharmatime_Backend.Repositories
             {
                 try
                 {
+                    var Drug = context.Medicamentos.SingleOrDefault(u => u.Estado == 1);
 
-                    var drugs = context.Medicamentos
+                    if (Drug != null)
+                    {
+                        var drugs = context.Medicamentos
                         .Select(u => new
                         {
                             IdMedicamento = u.IdMedicamento,
                             Nombre = u.Nombre,
                             SirvePara = u.SirvePara,
                             Presentacion = u.Presentacion,
-                            Contraindicaciones = u.Contraindicaciones                            
+                            Contraindicaciones = u.Contraindicaciones
                         })
                         .ToList<object>();
-
-                    return drugs;
+                        return drugs;
+                    }
+                    return null;
                 }
                 catch (Exception ex)
                 {
@@ -187,6 +192,68 @@ namespace Pharmatime_Backend.Repositories
             }
 
                      return resultado;
+        }
+
+
+        public static bool DeleteDrug(DeleteDrugDto model)
+        {
+            using (var context = new PHARMATIME_DBContext())
+            {
+                try
+                {
+                    // Buscar el usuario por su ID en la base de datos
+                    var drug = context.Medicamentos.FirstOrDefault(u => u.IdMedicamento == model.IdMedicamento);
+
+                    if (drug != null)
+                    {
+                        drug.Estado = 2;
+                        context.SaveChanges();
+                        return true;
+                    }
+                    else
+                    {
+
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    Console.WriteLine($"Error al eliminar el usuario: {ex.Message}");
+                    return false;
+                }
+            }
+        }
+
+
+        public static bool RecoverDrug(DeleteDrugDto model)
+        {
+            using (var context = new PHARMATIME_DBContext())
+            {
+                try
+                {
+                    // Buscar el usuario por su ID en la base de datos
+                    var drug = context.Medicamentos.FirstOrDefault(u => u.IdMedicamento == model.IdMedicamento);
+
+                    if (drug != null)
+                    {
+                        drug.Estado = 1;
+                        context.SaveChanges();
+                        return true;
+                    }
+                    else
+                    {
+
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    Console.WriteLine($"Error al eliminar el usuario: {ex.Message}");
+                    return false;
+                }
+            }
         }
 
     }

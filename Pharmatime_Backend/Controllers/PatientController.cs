@@ -69,7 +69,7 @@ namespace Pharmatime_Backend.Controllers
 
         }
         
-        [HttpDelete("DeletePatient")]
+        [HttpPost("DeletePatient")]
         public IActionResult Delete([FromBody] DeletePatientDto patient)
         {
             var us = new PatientService();
