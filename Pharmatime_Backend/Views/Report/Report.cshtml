@@ -1,0 +1,153 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte Horario de medicamentos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            margin: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            width: 140px;
+            height: 115px;
+        }
+
+            .logo img {
+                width: 100%;
+                height: 100%;
+            }
+
+        .contact-info {
+            padding: 30px 0;
+        }
+
+        .report-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .report-description {
+            padding: 20px 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .table-container {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .footer {
+            text-align: right;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <img src="https://i.ibb.co/mNP0P6h/Captura-de-pantalla-2024-03-29-135322.png" alt="Logo">
+            </div>
+           @*  <div class="contact-info">
+                <div>PHARMATIME</div>
+                <div>Facatativá - Cundinamarca</div>
+                <div>3107937196</div>
+                <div>pharmatime8@gmail.com</div>
+            </div>
+            <div class="report-date">
+                <div style="background-color: #427FAE; color: #ffffff; border: 1px solid #257272; padding: 5px;">Reporte generado el día</div>
+                <div id="currentDate" style="border: 1px solid #427FAE;"></div>
+                <div style="background-color: #427FAE; color: #ffffff; border: 1px solid #257272; padding: 5px;">Siendo las</div>
+                <div id="currentTime" style="border: 1px solid #427FAE;"></div>
+            </div> *@
+        </div>
+        <div class="content">
+            <div class="report-title">Reporte Horario de medicamentos</div>
+            <div class="report-description">
+                Este reporte muestra los medicamentos asignados a cada uno de los pacientes de tutor [Nombre] [Apellido] con sus respectivas dosis y horas asignadas.
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr style="background-color: #427FAE; color: #ffffff;">
+                            <th>Paciente</th>
+                            <th>Medicamento</th>
+                            <th>Durante</th>
+                            <th>Dosis</th>
+                            <th>Intervalo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- datos d ela tabla -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="footer">
+            <span id="pageNumber">Página</span>
+            <span id="currentPageNumber">1</span>
+            <span>de</span>
+            <span id="totalPages">1</span>
+        </div>
+    </div>
+
+    <script>
+        // // Obtener los elementos donde se mostrarán la fecha y la hora
+        // var currentDateElement = document.getElementById("currentDate");
+        // var currentTimeElement = document.getElementById("currentTime");
+
+        // // Obtener la fecha y la hora actuales
+        // var currentDate = new Date().toLocaleDateString();
+        // var currentTime = new Date().toLocaleTimeString();
+
+        // // Actualizar el contenido de los elementos con la fecha y la hora actuales
+        // currentDateElement.textContent = currentDate;
+        // currentTimeElement.textContent = currentTime;
+
+        // Obtener el número total de páginas (aquí asumimos que hay una sola página)
+        var totalPages = 1;
+
+        // Actualizar el número total de páginas
+        document.getElementById("totalPages").textContent = totalPages;
+
+        // Obtener el número de página actual (aquí asumimos que estamos en la página 1)
+        var currentPageNumber = 1;
+
+        // Actualizar el número de página actual
+        document.getElementById("currentPageNumber").textContent = currentPageNumber;
+    </script>
+</body>
+</html>
+

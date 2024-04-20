@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pharmatime_Backend.Repositories;
+using Wkhtmltopdf.NetCore;
 
 namespace Pharmatime_Backend.Controllers
 {
@@ -38,8 +39,6 @@ namespace Pharmatime_Backend.Controllers
             }
         }
 
-
-        
 
     }
 }

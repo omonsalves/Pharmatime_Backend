@@ -47,7 +47,7 @@ namespace Pharmatime_Backend.Repositories
         }
 
 
-        public List<object> ReadDrugs()
+        public List<object>? ReadDrugs()
         {
             using (var context = new PHARMATIME_DBContext())
             {
@@ -87,7 +87,7 @@ namespace Pharmatime_Backend.Repositories
             {
                 try
                 {
-                    var user = context.Usuarios.SingleOrDefault(u => u.IdUsuario == model.id_usuario);
+                    var user = context.Usuarios.Where(u => u.TipoUsuario ==2).SingleOrDefault(u => u.IdUsuario == model.id_usuario);
                     
                     if (user != null)
                     {
@@ -95,6 +95,7 @@ namespace Pharmatime_Backend.Repositories
                         {
                             IdUsuario = model.id_usuario,
                             IdMedicamento = model.id_medicamento,   
+                            IdTutor = model.id_tutor,   
                             Durante = model.durante,
                             Dosis = model.dosis,    
                             Intervalo = model.intervalo                           

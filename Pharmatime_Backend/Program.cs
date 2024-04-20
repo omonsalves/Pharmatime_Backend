@@ -1,8 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Pharmatime_Backend.Repositories.Models;
+using Rotativa.AspNetCore;
+using Wkhtmltopdf.NetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllersWithViews();
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -23,6 +26,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+string wwwroot = app.Environment.WebRootPath;
+RotativaConfiguration.Setup(wwwroot, "Rotativa");
+
 
 app.UseHttpsRedirection();
 
