@@ -125,5 +125,40 @@ using Pharmatime_Backend.Repositories;
         return respuestaJson;
     }
 
+
+    public List<object> ReadRequestDrug(List<object> request)
+    {
+        if (request != null && request.Any())
+        {
+            return request;
+        }
+        else
+        {
+            throw new InvalidOperationException("La lista de solicitudes está vacía o nula.");
+        }
+    }
+
+
+    public ResultDto RequestAnswered(RequestAnsweredDto model)
+    {
+        var respuestaJson = new ResultDto()
+        {
+            Mensaje = "Error al atender la solicitud",
+            Code = 400
+        };
+
+        if (DrugsRepository.RequestAnswered(model))
+        {
+            respuestaJson = new ResultDto()
+            {
+                Mensaje = "Solicitud atendida correctamente",
+                Code = 200
+            };
+
+        }
+
+        return respuestaJson;
+    }
+
 }
 

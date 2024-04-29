@@ -1,12 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-    Layout = null;
-}
-
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -15,10 +7,6 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-        }
-
-        #aaa {
-            grid-template-columns: repeat(3, 1fr);
         }
 
         .container {
@@ -39,6 +27,7 @@
             .logo img {
                 width: 100%;
                 height: 100%;
+                border-radius: 50%; /* Agregado para dar un borde redondo a la imagen */
             }
 
         .contact-info {
@@ -79,38 +68,23 @@
     </style>
 </head>
 <body>
-
     <div class="container">
-
-        <div class="table-container">
-            <table >
-                <thead style="border: 0px solid #ffffff;">
-                    <tr>
-                        <th><img src="https://i.ibb.co/mNP0P6h/Captura-de-pantalla-2024-03-29-135322.png" alt="Logo" style="width:60%"; style=" heigth:60%;"></th>
-                        <th>
-                            <div class="contact-info">
-                                <div>PHARMATIME</div>
-                                <div>Facatativá - Cundinamarca</div>
-                                <div>3107937196</div>
-                                <div>pharmatime8@gmail.com</div>
-                            </div>
-                        </th>
-                        <th>
-                            <div class="report-date">
-                                <div style="background-color: #427FAE; color: #ffffff; border: 1px solid #257272; padding: 5px;">Reporte generado el día</div>
-                                <div id="currentDate" style="border: 1px solid #427FAE;"></div>
-                                <div style="background-color: #427FAE; color: #ffffff; border: 1px solid #257272; padding: 5px;">Siendo las</div>
-                                <div id="currentTime" style="border: 1px solid #427FAE;"></div>
-                            </div>
-                        </th>
-                    </tr>
-                
-            </table>
-        </div>
-        
-
-        
-        
+        <div class="header">
+            <div class="logo">
+                <img src="https://i.ibb.co/mNP0P6h/Captura-de-pantalla-2024-03-29-135322.png" alt="Logo">
+            </div>
+            <div class="contact-info">
+                <div>PHARMATIME</div>
+                <div>Facatativá - Cundinamarca</div>
+                <div>3107937196</div>
+                <div>pharmatime8@gmail.com</div>
+            </div>
+            <div class="report-date">
+                <div style="background-color: #427FAE; color: #ffffff; border: 1px solid #257272; padding: 5px;">Reporte generado el día</div>
+                <div id="currentDate" style="border: 1px solid #427FAE;"></div>
+                <div style="background-color: #427FAE; color: #ffffff; border: 1px solid #257272; padding: 5px;">Siendo las</div>
+                <div id="currentTime" style="border: 1px solid #427FAE;"></div>
+            </div>
         </div>
         <div class="content">
             <div class="report-title">Reporte Horario de medicamentos</div>
@@ -129,7 +103,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                       
+                        <!-- Aquí se insertarán las filas de la tabla con datos dinámicos -->
                     </tbody>
                 </table>
             </div>
@@ -142,7 +116,30 @@
         </div>
     </div>
 
-   
+    <script>
+        // Obtener los elementos donde se mostrarán la fecha y la hora
+        var currentDateElement = document.getElementById("currentDate");
+        var currentTimeElement = document.getElementById("currentTime");
+
+        // Obtener la fecha y la hora actuales
+        var currentDate = new Date().toLocaleDateString();
+        var currentTime = new Date().toLocaleTimeString();
+
+        // Actualizar el contenido de los elementos con la fecha y la hora actuales
+        currentDateElement.textContent = currentDate;
+        currentTimeElement.textContent = currentTime;
+
+        // Obtener el número total de páginas (aquí asumimos que hay una sola página)
+        var totalPages = 1;
+
+        // Actualizar el número total de páginas
+        document.getElementById("totalPages").textContent = totalPages;
+
+        // Obtener el número de página actual (aquí asumimos que estamos en la página 1)
+        var currentPageNumber = 1;
+
+        // Actualizar el número de página actual
+        document.getElementById("currentPageNumber").textContent = currentPageNumber;
+    </script>
 </body>
 </html>
-

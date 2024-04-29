@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Pharmatime_Backend.Repositories.Models
 {
+    /// <summary>
+    /// Llave primaria de la tabla auditoria
+    /// </summary>
     public partial class Auditorium
     {
         public int IdAuditoria { get; set; }

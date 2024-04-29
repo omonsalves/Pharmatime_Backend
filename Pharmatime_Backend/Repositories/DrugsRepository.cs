@@ -1,7 +1,5 @@
 ﻿using Pharmatime_Backend.Repositories.Models;
 using Pharmatime_Backend.Utilities;
-using System.Net.Mail;
-using System.Net;
 
 namespace Pharmatime_Backend.Repositories
 {
@@ -121,15 +119,24 @@ namespace Pharmatime_Backend.Repositories
 
         public static bool RequestNewdrugsMail (MailNewDrugsDto model)
         {
+            Mail m = new Mail();    
             bool resultado = false;
             using (var context = new PHARMATIME_DBContext())
             {
                 try
                 {
-                    var drugs = context.Medicamentos.SingleOrDefault(u => u.Nombre == model.Medicamento);
-
-                    if (drugs == null)
+                    var drug = context.Medicamentos.SingleOrDefault(u => u.Nombre == model.Medicamento);
+                    if (drug == null)
                     {
+                        var newDrug = new SolicitudMedicamento()
+                        {
+                            IdUsuario = model.IdUsuario,
+                            NombreMedicamento = model.Medicamento,
+                            UsoDado = model.UsoDado
+                        };
+
+                        context.SolicitudMedicamentos.Add(newDrug);
+                        context.SaveChanges();
 
                         string asunto = "Solicitud Nuevo Medicamento";
                         string mensaje = @"
@@ -155,7 +162,7 @@ namespace Pharmatime_Backend.Repositories
                                 
                                 <p><span style='color: #008CBA;'>[Uso del medicamento]</span></p>
                                 
-                                <p>Si necesita más información o tiene alguna pregunta, no dude en ponerse en contacto con nosotros.</p>
+                                <p>Esta solicitud se encuentra en su lista de solicitudes en PHARMATIME, procure su pronta solución</p>
                             </body>
                             </html>";
 
@@ -164,22 +171,9 @@ namespace Pharmatime_Backend.Repositories
                         mensaje = mensaje.Replace("[Uso del medicamento]", model.UsoDado);
 
                         string destinatario = "monsalveserrato42@gmail.com";
-                        MailMessage mail = new MailMessage();
-                        mail.To.Add(destinatario);
-                        mail.From = new MailAddress("pharmatime8@gmail.com");
-                        mail.Subject = asunto;
-                        mail.Body = mensaje;
-                        mail.IsBodyHtml = true;
 
-                        var smtp = new SmtpClient()
-                        {
-                            Credentials = new NetworkCredential("pharmatime8@gmail.com", "huejdvhbfjbkvgjc"),
-                            Host = "smtp.gmail.com",
-                            Port = 587,
-                            EnableSsl = true
-                        };
-
-                        smtp.Send(mail);
+                        m.SendMail(destinatario, asunto, mensaje);
+                        
                         resultado = true;
                     }
 
@@ -241,6 +235,109 @@ namespace Pharmatime_Backend.Repositories
                         drug.Estado = 1;
                         context.SaveChanges();
                         return true;
+                    }
+                    else
+                    {
+
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    Console.WriteLine($"Error al eliminar el usuario: {ex.Message}");
+                    return false;
+                }
+            }
+        }
+
+
+
+        public List<object>? ReadRequestDrug()
+        {
+            using (var context = new PHARMATIME_DBContext())
+            {
+
+                try
+                {
+              
+
+                    var drugs = context.SolicitudMedicamentos
+                     .Join(context.Usuarios, // la tabla con la que unir
+                     solicitud => solicitud.IdUsuario, // la llave primaria
+                     usuario => usuario.IdUsuario, // la llave foránea
+                    (solicitud, usuario) => new // seleccionar el resultado
+                    {
+                        IdSolicitudMedicamento = solicitud.IdSolicitudMedicamento,
+                        NombreUsuario = usuario.Nombre + " " + usuario.Apellido,
+                        NombreMedicamento = solicitud.NombreMedicamento,
+                        UsoDado = solicitud.UsoDado
+                    })
+                    .ToList<object>();
+
+                    return drugs;
+                    
+                    
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error al obtener los usuarios: {ex.Message}");
+                    return null;
+                }
+            }
+        }
+
+
+
+
+        public static bool RequestAnswered(RequestAnsweredDto model)
+        {
+            Mail m = new Mail();
+            using (var context = new PHARMATIME_DBContext())
+            {
+                try
+                {
+                    // Buscar el usuario por su ID en la base de datos
+                    var request = context.SolicitudMedicamentos.SingleOrDefault(u => u.IdSolicitudMedicamento == model.IdSolicitud);
+                    
+                    if (request != null)
+                    {
+                        context.SolicitudMedicamentos.Remove(request);
+                        context.SaveChanges();
+
+                        var user = context.Usuarios.SingleOrDefault(u => u.IdUsuario == request.IdUsuario);
+
+                        string correo = user.Correo;
+                        string asunto = "Solicitud atendida";
+                        string mensaje = @"
+                            <html>
+                            <head>
+                                <style>
+                                    body {
+                                        font-family: Arial, sans-serif;
+                                    }
+                                    h1 {
+                                        color: #333333;
+                                    }
+                                    p {
+                                        color: #666666;
+                                    }
+                                </style>
+                            </head>
+                            <body>
+                                                                
+                                <h5>Pharmatime le informa que:</h5>
+                                <p>La solicitud que envio para registrar el medicamento <span style='color: #008CBA;'>[medicamneto]</span> ya a sido atendida</p>
+                                <p>El medicamento ya se encuentra registrado en la base de datos, revise la lista de medicamentos.</p>
+                                <p>Si necesita más información o tiene alguna pregunta, no dude en ponerse en contacto con nosotros.</p>
+                            </body>
+                            </html>";
+
+                        mensaje = mensaje.Replace("[medicamneto]", request.NombreMedicamento);
+                        m.SendMail(correo, asunto, mensaje);
+
+                        return true;
+                        
                     }
                     else
                     {

@@ -50,14 +50,6 @@ namespace Pharmatime_Backend.Controllers
             }
         }
 
-        [HttpPost("RequestNewDrugs")]
-        public IActionResult RequestNewDrugs([FromBody] MailNewDrugsDto newDrugs)
-        {
-            var us = new DrugsService();
-            var result = us.MailRequestNewdrugs(newDrugs);
-            return StatusCode(result.Code, result);
-
-        }
         
         [HttpPost("AssignDrugs")]
         public IActionResult AssignDrugs([FromBody] AssignDrugsDto assign)
