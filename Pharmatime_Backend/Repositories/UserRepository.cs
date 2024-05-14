@@ -32,7 +32,8 @@ public class UserRepository
                          Correo = model.Correo,
                          Contrasena = e.EncryptPassword(model.Contrasena),
                          TipoUsuario = 1,
-                         Estado = 1
+                         Estado = 1,
+                         IdTutor = model.IdUsuario
                      };
     
                      context.Usuarios.Add(user);

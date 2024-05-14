@@ -10,8 +10,8 @@ namespace Pharmatime_Backend.Controllers
     public class ScheduleController : ControllerBase
     {
 
-        [HttpPost("DataSchedule")]
-        public IActionResult DataSchedule(ScheduleDto model)
+        [HttpPost("DataScheduleTutor")]
+        public IActionResult DataScheduleDoctor(ScheduleDto model)
         {
             try
             {
@@ -19,7 +19,37 @@ namespace Pharmatime_Backend.Controllers
                 var sh = new ScheduleService();
             
 
-                var Schedule = sh.ScheduleData(model);
+                var Schedule = sh.ScheduleDataDoctor(model);
+
+                if (Schedule != null)
+                {
+                   
+                    return Ok(new { StatusCode = 200, Usuarios = Schedule });
+                }
+                else
+                {
+                    
+                    return StatusCode(500, "No se pudo obtener los datos para el horario");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al procesar la solicitud: {ex.Message}");
+            }
+        }
+        
+        
+        [HttpPost("DataSchedulePatient")]
+        public IActionResult DataSchedulePatient(ScheduleDto model)
+        {
+            try
+            {
+                
+                var sh = new ScheduleService();
+            
+
+                var Schedule = sh.ScheduleDataPatient(model);
 
                 if (Schedule != null)
                 {

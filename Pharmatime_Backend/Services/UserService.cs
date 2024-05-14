@@ -27,24 +27,49 @@ public class UserService
         return respuestaJson;
     }
 
-    public ResultDto LogingUser(LoginDto model)
+    public ResultLoginDto LogingUser(LoginDto model)
     {
-        var respuestaJson = new ResultDto()
+        var respuestaJson = new ResultLoginDto()
         {
             Mensaje = "Credenciales incorrectas",
             Code = 400
         };
+      
+            
 
         if (UserRepository.Login(model.Correo, model.Contrasena))
         {
-            respuestaJson = new ResultDto()
+            
+            using (var context = new PHARMATIME_DBContext())
             {
-                Mensaje = "Inicio de sesion correcto",
-                Code = 200
-            };
+                var user = context.Usuarios.First(u => u.Correo == model.Correo);
+                var u = context.Usuarios.SingleOrDefault(u => u.IdUsuario == user.IdUsuario);
+
+                string rol = "";
+
+                if(u.TipoUsuario == 1)
+                {
+                    rol = "tutor";
+                } else if (u.TipoUsuario == 2)
+                {
+                    rol = "paciente";
+                }else if (u.TipoUsuario == 3) {
+                    rol = "medico";
+                }
+                respuestaJson = new ResultLoginDto()
+                {
+                    Mensaje = "Inicio de sesion correcto",
+                    Code = 200,
+                    IdUsuario = u.IdUsuario,
+                    Nombre = u.Nombre,
+                    Apellido = u.Apellido,
+                    Rol = rol
+                };
+
+            }
         }
 
-        return respuestaJson;
+        return respuestaJson ;
     }
     public ResultDto ServiceMail(MailDto destinatario)
     {

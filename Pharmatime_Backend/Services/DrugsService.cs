@@ -160,5 +160,27 @@ using Pharmatime_Backend.Repositories;
         return respuestaJson;
     }
 
+
+    public ResultDto DeleteS(RequestAnsweredDto model)
+    {
+        var respuestaJson = new ResultDto()
+        {
+            Mensaje = "Error al eliminar solicitud",
+            Code = 400
+        };
+
+        if (DrugsRepository.DeleteS(model))
+        {
+            respuestaJson = new ResultDto()
+            {
+                Mensaje = "Solicitud eliminada correctamente",
+                Code = 200
+            };
+
+        }
+
+        return respuestaJson;
+    }
+
 }
 

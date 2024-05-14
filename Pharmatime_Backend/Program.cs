@@ -19,9 +19,7 @@ builder.Services.AddSwaggerGen(
         {
             Title = "PHARMATIME API",
             Version = "v1",
-            Description = "" +
-            "Elaborada por : ..." +
-            "El API de PharmaTime es una interfaz diseñada para facilitar la gestión eficiente " +
+            Description ="El API de PharmaTime es una interfaz diseñada para facilitar la gestión eficiente " +
             "de los horarios de medicación de los pacientes. Esta API proporciona un conjunto completo de funcionalidades que permiten" +
             " a los desarrolladores integrar las capacidades de PharmaTime en sus propias aplicaciones o sistemas."
 
@@ -35,6 +33,22 @@ builder.Services.AddDbContext<PHARMATIME_DBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("PHARMATIMEContext"));
 });
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(MyAllowSpecificOrigins, policy =>
+    {
+        
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
+        policy.WithOrigins("http://localhost:5173");
+    });
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -47,7 +61,7 @@ if (app.Environment.IsDevelopment())
 string wwwroot = app.Environment.WebRootPath;
 RotativaConfiguration.Setup(wwwroot, "Rotativa");
 
-
+app.UseCors(MyAllowSpecificOrigins);
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

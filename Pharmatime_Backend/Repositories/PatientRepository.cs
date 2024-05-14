@@ -3,6 +3,7 @@ using Pharmatime_Backend.Repositories.Models;
 using Pharmatime_Backend.Utilities;
 using System.Net.Mail;
 using System.Net;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Pharmatime_Backend.Repositories
@@ -44,7 +45,8 @@ namespace Pharmatime_Backend.Repositories
                             Correo = model.Correo,
                             Contrasena = e.EncryptPassword(contraseña),
                             TipoUsuario = 2,
-                            Estado = 3
+                            Estado = 3,
+                            IdTutor = model.IdTutor
                         };
 
                         context.Usuarios.Add(user);
@@ -99,7 +101,7 @@ namespace Pharmatime_Backend.Repositories
 
 
 
-        public List<object> ReadPatient()
+        public List<object> ReadPatient(DeletePatientDto model)
         {
             using (var context = new PHARMATIME_DBContext())
             {
@@ -110,13 +112,14 @@ namespace Pharmatime_Backend.Repositories
                     if (user != null)
                     {
                         var usuarios = context.Usuarios
-                           .Where(u => u.TipoUsuario == 2)
+                           .Where(u => u.TipoUsuario == 2 && u.IdTutor == model.IdUsuario && (u.Estado == 1 || u.Estado ==3))
+                           .Include(i => i.GeneroNavigation)
                            .Select(u => new
                            {
                                IdUsuario = u.IdUsuario,
                                Nombre = u.Nombre,
                                Apellido = u.Apellido,
-                               Genero = u.Genero,
+                               Genero = u.GeneroNavigation.Nombre,
                                Telefono = u.Telefono,
                                Edad = u.Edad,
                                Correo = u.Correo

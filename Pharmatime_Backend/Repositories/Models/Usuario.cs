@@ -7,6 +7,7 @@ namespace Pharmatime_Backend.Repositories.Models
     {
         public Usuario()
         {
+            InverseIdTutorNavigation = new HashSet<Usuario>();
             SolicitudMedicamentos = new HashSet<SolicitudMedicamento>();
             UsuarioEnfermedads = new HashSet<UsuarioEnfermedad>();
             UsuarioMedicamentoIdTutorNavigations = new HashSet<UsuarioMedicamento>();
@@ -23,10 +24,13 @@ namespace Pharmatime_Backend.Repositories.Models
         public string? Contrasena { get; set; }
         public int? TipoUsuario { get; set; }
         public int? Estado { get; set; }
+        public int? IdTutor { get; set; }
 
         public virtual Estado? EstadoNavigation { get; set; }
         public virtual GeneroUsuario? GeneroNavigation { get; set; }
+        public virtual Usuario? IdTutorNavigation { get; set; }
         public virtual Rol? TipoUsuarioNavigation { get; set; }
+        public virtual ICollection<Usuario> InverseIdTutorNavigation { get; set; }
         public virtual ICollection<SolicitudMedicamento> SolicitudMedicamentos { get; set; }
         public virtual ICollection<UsuarioEnfermedad> UsuarioEnfermedads { get; set; }
         public virtual ICollection<UsuarioMedicamento> UsuarioMedicamentoIdTutorNavigations { get; set; }

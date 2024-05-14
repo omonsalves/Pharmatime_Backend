@@ -1,4 +1,5 @@
-﻿using Pharmatime_Backend.Repositories.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Pharmatime_Backend.Repositories.Models;
 using Pharmatime_Backend.Utilities;
 
 namespace Pharmatime_Backend.Repositories
@@ -56,12 +57,13 @@ namespace Pharmatime_Backend.Repositories
                     if (Drug != null)
                     {
                         var drugs = context.Medicamentos
+                        .Include(i=> i.PresentacionNavigation)
                         .Select(u => new
                         {
                             IdMedicamento = u.IdMedicamento,
                             Nombre = u.Nombre,
                             SirvePara = u.SirvePara,
-                            Presentacion = u.Presentacion,
+                            Presentacion = u.PresentacionNavigation.Descripcion,
                             Contraindicaciones = u.Contraindicaciones
                         })
                         .ToList<object>();
@@ -353,6 +355,40 @@ namespace Pharmatime_Backend.Repositories
                 }
             }
         }
+
+
+
+        public static bool DeleteS(RequestAnsweredDto model)
+        {
+            using (var context = new PHARMATIME_DBContext())
+            {
+                try
+                {
+                    // Buscar el usuario por su ID en la base de datos
+                    var drug = context.SolicitudMedicamentos.FirstOrDefault(u => u.IdSolicitudMedicamento == model.IdSolicitud);
+
+                    if (drug != null)
+                    {
+                        context.SolicitudMedicamentos.Remove(drug);
+                        context.SaveChanges();
+                        return true;
+                    }
+                    else
+                    {
+
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    Console.WriteLine($"Error al eliminar la solicitud: {ex.Message}");
+                    return false;
+                }
+            }
+        }
+
+
 
     }
 }

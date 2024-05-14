@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Pharmatime_Backend.Repositories.Models;
 using Pharmatime_Backend.Repositories;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pharmatime_Backend.Controllers
 {
@@ -29,14 +30,14 @@ namespace Pharmatime_Backend.Controllers
 
 
         [HttpPost("ReadPatient")]
-        public IActionResult ReadPatient()
+        public IActionResult ReadPatient(DeletePatientDto model)
         {
             try
             {
                  var us = new PatientRepository();
                  var pa = new PatientService();
                 // Aquí se invoca el método para obtener la lista de usuarios
-                var patient = us.ReadPatient();
+                var patient = us.ReadPatient(model);
 
                  var usuarios = pa.ListPatient(patient);
 

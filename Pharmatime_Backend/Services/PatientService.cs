@@ -27,15 +27,17 @@ public class PatientService
 
       public List<object> ListPatient(List<object> usuarios)
       {
+        var list = new List<object>();
           if (usuarios != null && usuarios.Any())
           {
-              return usuarios;
+              list.AddRange(usuarios);
           }
           else
           {
-              throw new InvalidOperationException("La lista de usuarios está vacía o nula.");
+              list = new List<object>();
           }
-      }
+        return list;
+    }
 
     public ResultDto PatientUpdate(UpdatePatientDto patient)
     {

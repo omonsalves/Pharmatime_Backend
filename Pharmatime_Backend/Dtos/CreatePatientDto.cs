@@ -8,5 +8,6 @@
         public string Telefono { get; set; }
         public byte Edad { get; set; }
         public string Correo { get; set; }
+        public int IdTutor { get; set;}
     }
 

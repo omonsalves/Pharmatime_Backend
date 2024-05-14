@@ -264,6 +264,8 @@ namespace Pharmatime_Backend.Repositories.Models
 
                 entity.Property(e => e.Genero).HasColumnName("genero");
 
+                entity.Property(e => e.IdTutor).HasColumnName("id_tuto");
+
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(20)
                     .IsUnicode(false)
@@ -285,6 +287,11 @@ namespace Pharmatime_Backend.Repositories.Models
                     .WithMany(p => p.Usuarios)
                     .HasForeignKey(d => d.Genero)
                     .HasConstraintName("FK__USUARIO__genero__6A30C649");
+
+                entity.HasOne(d => d.IdTutorNavigation)
+                    .WithMany(p => p.InverseIdTutorNavigation)
+                    .HasForeignKey(d => d.IdTutor)
+                    .HasConstraintName("FK_Tutor_Usuario");
 
                 entity.HasOne(d => d.TipoUsuarioNavigation)
                     .WithMany(p => p.Usuarios)
